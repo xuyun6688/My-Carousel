@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Carousel</title>
+  <script src="js/jquery-3.4.0.js"></script>
+  <style>
+    * {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-family: "微软雅黑"
+    }
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+    .carousel {
+      width: 755px;
+      height: 353px;
+      margin: 20px auto;
+      overflow: hidden;
+      position: relative;
+    }
+    .imglist {
+      height: 353px;
+      width: 3020px;
+    }
+    .imglist a {
+      float: left;
+    }
+    img {
+      border: none;
+      height: 353px;
+      width: 755px;
+    }
+    .left, .right {
+      display: inline-block;
+      color: #ffffff;
+      font-size: 42px;
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      background-color: #333;
+      opacity: 0.7;
+      position: absolute;
+      top: 151.5px;
+      left: 5px;
+      text-align: center;
+      line-height: 50px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .right {
+      left: 700px;
+    }
+    .indicators {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      margin-left: -65px
+    }
+    .item {
+      float: left;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #333;
+      opacity: 0.7;
+      margin: 0 10px;
+    }
+    .active {
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel">
+    <div class="left">&lt;</div>
+    <div class="imglist">
+      <a href="#" data-index="0"><img src="img/banner1.jpg" alt=""></a>
+      <a href="#" data-index="1"><img src="img/banner2.jpg" alt=""></a>
+      <a href="#" data-index="2"><img src="img/banner3.jpg" alt=""></a>
+      <a href="#" data-index="3"><img src="img/banner4.jpg" alt=""></a>
+    </div>
+    <div class="right">&gt;</div>
+    <div class="indicators">
+      <div class="item active"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </div>
+
+  <script>
+    $(function() {
+      var t = null;
+      var index = 0;
+      var inx = 0;
+      $('.right').click(function() {
+        $('.imglist>a').eq(3).prependTo($('.imglist'));
+        $('.imglist').css('marginLeft', '-755px');
+        $('.imglist').animate({marginLeft: 0},300, function() {
+          $('.item').removeClass('active');
+          inx = $('.imglist>a').eq(0).data('index');
+          $('.item').eq(inx).addClass('active');
+        });
+      })
+      $('.left').click(function() {
+        $('.imglist').animate({marginLeft: '-755px'},300, function() {
+          $('.imglist>a').eq(0).appendTo($('.imglist'));
+          $('.imglist').css('marginLeft', 0);
+          $('.item').removeClass('active');
+          inx = $('.imglist>a').eq(0).data('index');
+          $('.item').eq(inx).addClass('active');
+        })
+      })
+      function carousel() {
+        t = setInterval(function() {
+          $('.imglist').animate({marginLeft: '-755px'},300, function() {
+            $('.imglist>a').eq(0).appendTo($('.imglist'));
+            $('.imglist').css('marginLeft', 0);
+            $('.item').removeClass('active');
+            inx = $('.imglist>a').eq(0).data('index');
+            $('.item').eq(inx).addClass('active');
+          })
+        }, 2000)
+      }
+      carousel();
+      $('.carousel').mouseover(function() {
+        clearInterval(t);
+      })
+      $('.carousel').mouseout(function() {
+        carousel();
+      })
+      $('.item').click(function() {
+        $('.item').removeClass('active');
+        $(this).addClass('active');
+        index = $(this).index();
+        inx = $('.imglist>a').eq(0).data('index');
+        if(index > inx) {
+          var temp = 200/(index - inx);
+            $('.imglist').animate({marginLeft: '-755px'},300, function() {
+              for(var i = index; i > inx; i-- ) {
+                $('.imglist>a').eq(0).appendTo($('.imglist'));
+                $('.imglist').css('marginLeft', 0);
+              }
+            })
+        } else if(index < inx) {
+          for(var j = inx; j > index; j--) {
+              $('.imglist>a').eq(3).prependTo($('.imglist'));
+              $('.imglist').css('marginLeft', '-755px');
+              $('.imglist').animate({marginLeft: 0},300);
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>
