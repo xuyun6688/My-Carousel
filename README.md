@@ -1,2 +1,2 @@
 # My-Carousel
-https://yoshikonohachikou.github.io/My-Carousel/My-Carousel.html
+https://yoshikonohachikou.github.io/My-Carousel/MyCarousel.html
